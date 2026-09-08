@@ -113,7 +113,7 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
   </div>
 </div>
 
-<footer>Bali ScamCheck • V2 • Online Database<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
+<footer>Bali ScamCheck • V3 • Supabase Fixed<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
 </div>
 
 
@@ -126,14 +126,17 @@ async function supabaseRequest(path, options = {}) {
     "apikey": SUPABASE_KEY,
     "Authorization": "Bearer " + SUPABASE_KEY,
     "Content-Type": "application/json",
+    "Accept": "application/json",
     ...(options.headers || {})
   };
-  const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, {...options, headers});
+  const url = SUPABASE_URL + "/rest/v1/" + path;
+  const res = await fetch(url, {...options, headers, mode:"cors", cache:"no-store"});
+  const text = await res.text();
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || ("HTTP " + res.status));
+    throw new Error("HTTP " + res.status + (text ? " — " + text : ""));
   }
-  return res.status === 204 ? null : res.json();
+  if (!text) return null;
+  try { return JSON.parse(text); } catch (_) { return text; }
 }
 
 function targetType(value) {
@@ -208,8 +211,9 @@ async function submitReport(){
    closeReport();
    document.getElementById('reportStory').value='';
  }catch(err){
-   console.error(err);
-   alert('Laporan gagal dikirim. Pastikan koneksi internet aktif lalu coba lagi.');
+   console.error('Bali ScamCheck Supabase error:', err);
+   const msg = err && err.message ? err.message : 'Unknown error';
+   alert('Laporan gagal dikirim.\n\nDetail: ' + msg);
  }finally{
    btn.disabled=false; btn.textContent='KIRIM LAPORAN';
  }
