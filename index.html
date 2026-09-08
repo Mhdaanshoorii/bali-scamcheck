@@ -92,6 +92,12 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
     <div class="modal-top"><div><b>🚨 Laporkan Penipuan</b><small>Bantu lindungi pengguna Bali lainnya.</small></div><button onclick="closeReport()">✕</button></div>
     <label>Yang ingin dilaporkan</label>
     <input id="reportTarget" placeholder="Nomor HP / rekening / e-wallet">
+    <label>Jenis data</label>
+    <select id="reportType">
+      <option value="phone">Nomor HP / WhatsApp</option>
+      <option value="bank_account">Rekening bank</option>
+      <option value="ewallet">E-wallet</option>
+    </select>
     <label>Kategori</label>
     <select id="reportCategory">
       <option>Rental motor</option><option>Villa / homestay</option><option>Tour / aktivitas</option>
@@ -107,18 +113,61 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
   </div>
 </div>
 
-<footer>Bali ScamCheck • Prototype V1 • Local Demo<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
+<footer>Bali ScamCheck • V2 • Online Database<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
 </div>
+
+
+<script>
+const SUPABASE_URL = "https://mqfipqpmsuapfctotjzo.supabase.co";
+const SUPABASE_KEY = "sb_publishable_4sFZXYku2HwgJ7wvHWwKLA_tN-nKxk-";
+
+async function supabaseRequest(path, options = {}) {
+  const headers = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": "Bearer " + SUPABASE_KEY,
+    "Content-Type": "application/json",
+    ...(options.headers || {})
+  };
+  const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, {...options, headers});
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || ("HTTP " + res.status));
+  }
+  return res.status === 204 ? null : res.json();
+}
+
+function targetType(value) {
+  const digits = value.replace(/\D/g, "");
+  if (digits.length >= 8) return "phone";
+  return "account";
+}
+
+function esc(v) {
+  return String(v ?? "").replace(/[<>&"]/g, "");
+}
+</script>
 
 <script>
 function focusSearch(){document.getElementById('q').focus();window.scrollTo({top:0,behavior:'smooth'})}
 function safe(v){return v.replace(/[<>&"]/g,'')}
-function check(){
+async function check(){
  const q=document.getElementById('q').value.trim(),r=document.getElementById('result');
  if(!q){r.style.display='block';r.innerHTML='Masukkan nomor HP, WhatsApp, rekening, atau e-wallet terlebih dahulu.';return}
- const x=safe(q);
+ const x=esc(q);
  r.style.display='block';
- r.innerHTML=`<div class="result-head"><div class="risk">🟢</div><div><div class="result-title">Belum ada laporan terverifikasi</div><div class="result-meta">${x}</div></div></div><div class="result-body">Kami belum menemukan laporan terverifikasi pada database demo.<br><span class="mini">Status: Belum ditemukan</span> <span class="mini">Sumber: Community</span></div>`;
+ r.innerHTML='<div class="result-head"><div class="risk">⏳</div><div><div class="result-title">Sedang mengecek...</div><div class="result-meta">'+x+'</div></div></div>';
+ try{
+   const data=await supabaseRequest('reports?target=eq.'+encodeURIComponent(q)+'&status=eq.verified&select=target,target_type,category,area,story,created_at&order=created_at.desc');
+   if(!data.length){
+     r.innerHTML='<div class="result-head"><div class="risk">🟢</div><div><div class="result-title">Belum ada laporan terverifikasi</div><div class="result-meta">'+x+'</div></div></div><div class="result-body">Kami belum menemukan laporan terverifikasi untuk data tersebut.<br><span class="mini">Status: Belum ditemukan</span> <span class="mini">Sumber: Community</span></div>';
+     return;
+   }
+   const item=data[0];
+   r.innerHTML='<div class="result-head"><div class="risk">🟠</div><div><div class="result-title">Ada laporan terverifikasi</div><div class="result-meta">'+esc(item.target)+'</div></div></div><div class="result-body"><b>Kategori:</b> '+esc(item.category)+'<br><b>Area:</b> '+esc(item.area)+'<br><br>'+esc(item.story)+'<br><span class="mini">Status: Diverifikasi</span> <span class="mini">Sumber: Community</span></div>';
+ }catch(err){
+   r.innerHTML='<div class="result-head"><div class="risk">⚠️</div><div><div class="result-title">Koneksi database gagal</div><div class="result-meta">Coba lagi beberapa saat.</div></div></div>';
+   console.error(err);
+ }
 }
 function showGuide(type){
  const d=document.getElementById('guideDetail');
@@ -139,19 +188,31 @@ function report(){
  document.getElementById('reportTarget').value=document.getElementById('q').value.trim();
 }
 function closeReport(){document.getElementById('reportModal').style.display='none'}
-function submitReport(){
+async function submitReport(){
  const target=document.getElementById('reportTarget').value.trim();
  const story=document.getElementById('reportStory').value.trim();
  if(!target||!story){alert('Isi minimal nomor/rekening dan kronologi singkat.');return}
- const report={
-  target:target, category:document.getElementById('reportCategory').value,
-  area:document.getElementById('reportArea').value, story:story,
-  status:'Menunggu Verifikasi', createdAt:new Date().toISOString()
+ const payload={
+  target:target,
+  target_type:document.getElementById('reportType').value,
+  category:document.getElementById('reportCategory').value,
+  area:document.getElementById('reportArea').value,
+  story:story,
+  status:'pending'
  };
- const reports=JSON.parse(localStorage.getItem('baliScamCheckReportsV1')||'[]');
- reports.push(report); localStorage.setItem('baliScamCheckReportsV1',JSON.stringify(reports));
- alert('Laporan tersimpan. Status: Menunggu Verifikasi.');
- closeReport(); document.getElementById('reportStory').value='';
+ const btn=document.querySelector('.submit-report');
+ btn.disabled=true; btn.textContent='MENGIRIM...';
+ try{
+   await supabaseRequest('reports',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(payload)});
+   alert('Laporan berhasil dikirim. Status: Menunggu Verifikasi.');
+   closeReport();
+   document.getElementById('reportStory').value='';
+ }catch(err){
+   console.error(err);
+   alert('Laporan gagal dikirim. Pastikan koneksi internet aktif lalu coba lagi.');
+ }finally{
+   btn.disabled=false; btn.textContent='KIRIM LAPORAN';
+ }
 }
 </script>
 </body>
