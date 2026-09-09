@@ -24,7 +24,7 @@ main{padding:20px 18px 35px}.section-title{font-size:15px;font-weight:800;margin
 .alert-filter{display:flex;gap:7px;overflow:auto;padding-bottom:3px;margin-bottom:10px}.filter{white-space:nowrap;padding:8px 11px;border-radius:99px;background:#f1f4f3;color:#53615f;font-size:10px}.filter.active{background:#0c8f7c;color:#fff}.alert-item{display:flex;gap:11px;padding:13px;border:1px solid #e4ecea;border-radius:15px;margin-bottom:8px}.alert-icon{width:35px;height:35px;border-radius:11px;background:#fff3dc;display:grid;place-items:center;flex:none}.alert-item b{font-size:12px}.alert-item span{display:block;font-size:10px;color:#75817f;margin-top:3px}.alert-item p{font-size:10px;color:#65716f;line-height:1.45;margin:7px 0 0}
 .alert-search{margin-bottom:9px}.alert-search input{width:100%;border:1px solid #e2eae8;border-radius:13px;background:#f8faf9;padding:12px;font-size:12px}.alert-count{font-size:10px;color:#7a8784;margin:4px 2px 9px}.alert-item.hidden{display:none!important}.modal{display:none;position:fixed;inset:0;background:#071c1bb8;z-index:20;padding:18px;align-items:flex-end;justify-content:center}.modal-box{width:100%;max-width:520px;background:#fff;border-radius:24px 24px 14px 14px;padding:20px;max-height:92vh;overflow:auto}.modal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}.modal-top b{display:block;font-size:17px}.modal-top small{display:block;color:#778582;font-size:11px;margin-top:4px}.modal-top button{background:#f1f4f3;border-radius:10px;width:34px;height:34px}label{display:block;font-size:11px;font-weight:800;margin:12px 0 6px;color:#40514f}select,textarea{width:100%;border:1px solid #dce6e4;border-radius:12px;padding:12px;font:inherit;font-size:13px;background:#fff;outline:none}textarea{resize:vertical}.privacy{margin-top:14px;background:#f1f8f6;border:1px solid #d8eae6;border-radius:12px;padding:11px;font-size:10px;line-height:1.5;color:#61706d}.submit-report{width:100%;margin-top:13px;background:#0c8f7c;color:white;padding:14px;border-radius:12px}
 footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;line-height:1.5}
-.score-card{margin:12px 0;padding:13px;border-radius:14px;border:1px solid #d7ebe6;background:#f4f8f6}.score-main{display:flex;align-items:center;gap:9px}.score-icon{font-size:22px}.score-label{font-weight:900;color:#10201f;font-size:14px}.score-desc{margin-top:5px;color:#52605e;font-size:11px;line-height:1.45}.alert-loading,.alert-empty{padding:18px;text-align:center;background:#fff;border:1px solid #e7ecea;border-radius:16px;color:#60706d;font-size:13px}.alert-item{display:flex;gap:12px;padding:16px;margin-bottom:10px;background:#fff;border:1px solid #e7ecea;border-radius:16px;box-shadow:0 5px 16px rgba(0,0,0,.04)}.alert-icon{width:40px;height:40px;display:grid;place-items:center;background:#fff4df;border-radius:12px;font-size:20px;flex:0 0 auto}.alert-item b{display:block;color:#10201f;font-size:14px}.alert-item span{display:block;margin-top:4px;color:#6a7774;font-size:11px}.alert-item p{margin:8px 0 0;color:#44524f;font-size:12px;line-height:1.5}</style>
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 2px}.stat-card{padding:12px 8px;text-align:center;background:#f7faf9;border:1px solid #e2ebe8;border-radius:14px}.stat-num{font-size:20px;font-weight:900;color:#0b514a}.stat-label{font-size:9px;color:#65726f;margin-top:3px}.stats-note{font-size:10px;color:#7b8784;margin:8px 2px 0;line-height:1.4}.score-card{margin:12px 0;padding:13px;border-radius:14px;border:1px solid #d7ebe6;background:#f4f8f6}.score-main{display:flex;align-items:center;gap:9px}.score-icon{font-size:22px}.score-label{font-weight:900;color:#10201f;font-size:14px}.score-desc{margin-top:5px;color:#52605e;font-size:11px;line-height:1.45}.alert-loading,.alert-empty{padding:18px;text-align:center;background:#fff;border:1px solid #e7ecea;border-radius:16px;color:#60706d;font-size:13px}.alert-item{display:flex;gap:12px;padding:16px;margin-bottom:10px;background:#fff;border:1px solid #e7ecea;border-radius:16px;box-shadow:0 5px 16px rgba(0,0,0,.04)}.alert-icon{width:40px;height:40px;display:grid;place-items:center;background:#fff4df;border-radius:12px;font-size:20px;flex:0 0 auto}.alert-item b{display:block;color:#10201f;font-size:14px}.alert-item span{display:block;margin-top:4px;color:#6a7774;font-size:11px}.alert-item p{margin:8px 0 0;color:#44524f;font-size:12px;line-height:1.5}</style>
 </head>
 <body>
 <div class="app">
@@ -62,6 +62,9 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
   <div class="alert-filter" id="alertFilters"><button class="filter active" onclick="filterAlerts('Semua',this)">Semua</button></div>
   <div id="alerts"><div class="alert-loading">⏳ Memuat Bali Alert...</div></div>
 
+
+  <div class="section-title" style="margin-top:22px">📊 Bali Safety Stats</div>
+  <div id="stats"><div class="alert-loading">⏳ Memuat statistik...</div></div>
 
   <div class="section-title" style="margin-top:22px">📚 Safety Guide</div>
   <div class="guide-grid">
@@ -202,13 +205,24 @@ function alertDate(value){
  catch(e){return '';}
 }
 let allAlerts=[];
-async function loadAlerts(){
+async async function loadStats(){
+ const box=document.getElementById('stats');
+ try{
+   const data=await supabaseRequest('reports?status=eq.verified&select=area,category,created_at');
+   const areas=new Set(data.map(x=>x.area).filter(Boolean));
+   const categories=new Set(data.map(x=>x.category).filter(Boolean));
+   box.innerHTML='<div class="stats-grid"><div class="stat-card"><div class="stat-num">'+data.length+'</div><div class="stat-label">Laporan terverifikasi</div></div><div class="stat-card"><div class="stat-num">'+allAlerts.length+'</div><div class="stat-label">Alert aktif</div></div><div class="stat-card"><div class="stat-num">'+areas.size+'</div><div class="stat-label">Area tercakup</div></div></div><div class="stats-note">Data berdasarkan laporan komunitas yang telah diverifikasi admin. Statistik ini bukan penilaian identitas seseorang.</div>';
+ }catch(err){ console.error('Stats error:',err); box.innerHTML='<div class="alert-empty">Statistik belum dapat dimuat.</div>'; }
+}
+
+function loadAlerts(){
  const box=document.getElementById('alerts');
  box.innerHTML='<div class="alert-loading">⏳ Memuat Bali Alert...</div>';
  try{
    allAlerts=await supabaseRequest('reports?status=eq.verified&is_alert=eq.true&select=alert_title,area,category,story,created_at&order=created_at.desc');
    buildAlertFilters();
    renderAlerts();
+   loadStats();
  }catch(err){
    console.error('Bali Alert error:',err);
    box.innerHTML='<div class="alert-empty">⚠️ Bali Alert belum dapat dimuat. Coba refresh halaman.</div>';
