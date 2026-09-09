@@ -24,7 +24,7 @@ main{padding:20px 18px 35px}.section-title{font-size:15px;font-weight:800;margin
 .alert-filter{display:flex;gap:7px;overflow:auto;padding-bottom:3px;margin-bottom:10px}.filter{white-space:nowrap;padding:8px 11px;border-radius:99px;background:#f1f4f3;color:#53615f;font-size:10px}.filter.active{background:#0c8f7c;color:#fff}.alert-item{display:flex;gap:11px;padding:13px;border:1px solid #e4ecea;border-radius:15px;margin-bottom:8px}.alert-icon{width:35px;height:35px;border-radius:11px;background:#fff3dc;display:grid;place-items:center;flex:none}.alert-item b{font-size:12px}.alert-item span{display:block;font-size:10px;color:#75817f;margin-top:3px}.alert-item p{font-size:10px;color:#65716f;line-height:1.45;margin:7px 0 0}
 .modal{display:none;position:fixed;inset:0;background:#071c1bb8;z-index:20;padding:18px;align-items:flex-end;justify-content:center}.modal-box{width:100%;max-width:520px;background:#fff;border-radius:24px 24px 14px 14px;padding:20px;max-height:92vh;overflow:auto}.modal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}.modal-top b{display:block;font-size:17px}.modal-top small{display:block;color:#778582;font-size:11px;margin-top:4px}.modal-top button{background:#f1f4f3;border-radius:10px;width:34px;height:34px}label{display:block;font-size:11px;font-weight:800;margin:12px 0 6px;color:#40514f}select,textarea{width:100%;border:1px solid #dce6e4;border-radius:12px;padding:12px;font:inherit;font-size:13px;background:#fff;outline:none}textarea{resize:vertical}.privacy{margin-top:14px;background:#f1f8f6;border:1px solid #d8eae6;border-radius:12px;padding:11px;font-size:10px;line-height:1.5;color:#61706d}.submit-report{width:100%;margin-top:13px;background:#0c8f7c;color:white;padding:14px;border-radius:12px}
 footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;line-height:1.5}
-.score-card{margin:12px 0;padding:13px;border-radius:14px;border:1px solid #d7ebe6;background:#f4f8f6}.score-main{display:flex;align-items:center;gap:9px}.score-icon{font-size:22px}.score-label{font-weight:900;color:#10201f;font-size:14px}.score-desc{margin-top:5px;color:#52605e;font-size:11px;line-height:1.45}</style>
+.score-card{margin:12px 0;padding:13px;border-radius:14px;border:1px solid #d7ebe6;background:#f4f8f6}.score-main{display:flex;align-items:center;gap:9px}.score-icon{font-size:22px}.score-label{font-weight:900;color:#10201f;font-size:14px}.score-desc{margin-top:5px;color:#52605e;font-size:11px;line-height:1.45}.alert-loading,.alert-empty{padding:18px;text-align:center;background:#fff;border:1px solid #e7ecea;border-radius:16px;color:#60706d;font-size:13px}.alert-item{display:flex;gap:12px;padding:16px;margin-bottom:10px;background:#fff;border:1px solid #e7ecea;border-radius:16px;box-shadow:0 5px 16px rgba(0,0,0,.04)}.alert-icon{width:40px;height:40px;display:grid;place-items:center;background:#fff4df;border-radius:12px;font-size:20px;flex:0 0 auto}.alert-item b{display:block;color:#10201f;font-size:14px}.alert-item span{display:block;margin-top:4px;color:#6a7774;font-size:11px}.alert-item p{margin:8px 0 0;color:#44524f;font-size:12px;line-height:1.5}</style>
 </head>
 <body>
 <div class="app">
@@ -64,11 +64,7 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
     <button class="filter" onclick="filterAlerts('Denpasar',this)">Denpasar</button>
     <button class="filter" onclick="filterAlerts('Gianyar',this)">Gianyar</button>
   </div>
-  <div id="alerts">
-    <div class="alert-item" data-area="Badung"><div class="alert-icon">🏍️</div><div><b>Rental motor minta DP penuh</b><span>Badung • Rental motor</span><p>Waspadai akun baru yang meminta transfer sebelum bertemu atau melihat unit.</p></div></div>
-    <div class="alert-item" data-area="Denpasar"><div class="alert-icon">💬</div><div><b>WhatsApp mengaku pemilik villa</b><span>Denpasar • Villa / homestay</span><p>Pelaku mengarahkan pembayaran ke rekening berbeda dari informasi awal.</p></div></div>
-    <div class="alert-item" data-area="Gianyar"><div class="alert-icon">🎟️</div><div><b>Tiket aktivitas dengan harga tidak wajar</b><span>Gianyar • Ticket / event</span><p>Jangan transfer terburu-buru hanya karena ada promo dengan batas waktu singkat.</p></div></div>
-  </div>
+  <div id="alerts"><div class="alert-loading">⏳ Memuat Bali Alert...</div></div>
 
 
   <div class="section-title" style="margin-top:22px">📚 Safety Guide</div>
@@ -113,7 +109,7 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
   </div>
 </div>
 
-<footer>Bali ScamCheck • V4 • Supabase Fixed<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
+<footer>Bali ScamCheck • V6 • Dynamic Bali Alert<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
 </div>
 
 
@@ -191,6 +187,42 @@ function showGuide(type){
  };
  d.style.display='block'; d.innerHTML='<b>'+data[type][0]+'</b><br>'+data[type][1];
 }
+function alertIcon(category){
+ const c=(category||'').toLowerCase();
+ if(c.includes('rental')) return '🏍️';
+ if(c.includes('villa')||c.includes('homestay')) return '🏠';
+ if(c.includes('whatsapp')) return '💬';
+ if(c.includes('ticket')||c.includes('event')) return '🎟️';
+ if(c.includes('phishing')) return '🔗';
+ if(c.includes('investasi')) return '💰';
+ if(c.includes('job')) return '💼';
+ if(c.includes('tour')||c.includes('aktivitas')) return '🏝️';
+ return '🚨';
+}
+function alertDate(value){
+ if(!value) return '';
+ try{return new Intl.DateTimeFormat('id-ID',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(value));}
+ catch(e){return '';}
+}
+async function loadAlerts(){
+ const box=document.getElementById('alerts');
+ box.innerHTML='<div class="alert-loading">⏳ Memuat Bali Alert...</div>';
+ try{
+   const data=await supabaseRequest('reports?status=eq.verified&is_alert=eq.true&select=alert_title,area,category,story,created_at&order=created_at.desc');
+   if(!data.length){box.innerHTML='<div class="alert-empty">🛡️ Belum ada Bali Alert aktif saat ini.</div>';return;}
+   box.innerHTML=data.map(item=>{
+     const title=esc(item.alert_title||'Peringatan keamanan Bali');
+     const area=esc(item.area||'Bali');
+     const category=esc(item.category||'Lainnya');
+     const story=esc(item.story||'Lakukan verifikasi tambahan sebelum bertransaksi.');
+     const date=alertDate(item.created_at);
+     return '<div class="alert-item" data-area="'+area+'"><div class="alert-icon">'+alertIcon(category)+'</div><div><b>'+title+'</b><span>'+area+' • '+category+(date?' • '+date:'')+'</span><p>'+story+'</p><span>✓ Diverifikasi • Community Report</span></div></div>';
+   }).join('');
+ }catch(err){
+   console.error('Bali Alert error:',err);
+   box.innerHTML='<div class="alert-empty">⚠️ Bali Alert belum dapat dimuat. Coba refresh halaman.</div>';
+ }
+}
 function filterAlerts(area,btn){
  document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active')); btn.classList.add('active');
  document.querySelectorAll('.alert-item').forEach(x=>x.style.display=(area==='Semua'||x.dataset.area===area)?'flex':'none');
@@ -227,6 +259,7 @@ async function submitReport(){
    btn.disabled=false; btn.textContent='KIRIM LAPORAN';
  }
 }
+loadAlerts();
 </script>
 </body>
 </html>
