@@ -38,7 +38,7 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
   <div class="sub">Cek nomor WhatsApp, rekening, atau e-wallet sebelum mengirim uang.</div>
   <div class="searchbox">
     <input id="q" placeholder="Masukkan nomor / rekening...">
-    <button class="check" onclick="check()">CEK</button>
+    <button class="check" id="checkBtn" type="button">CEK</button>
   </div>
   <div class="result" id="result"></div>
 </section>
@@ -322,7 +322,14 @@ async function submitReport(){
    btn.disabled=false; btn.textContent='KIRIM LAPORAN';
  }
 }
-loadAlerts();
+document.addEventListener('DOMContentLoaded', function(){
+  const btn=document.getElementById('checkBtn');
+  const input=document.getElementById('q');
+  if(btn) btn.addEventListener('click', check);
+  if(input) input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); check(); } });
+  loadAlerts();
+});
+window.check = check;
 </script>
 </body>
 </html>
