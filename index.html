@@ -217,7 +217,7 @@ function alertDate(value){
  catch(e){return '';}
 }
 let allAlerts=[];
-async async function loadStats(){
+async function loadStats(){
  const box=document.getElementById('stats');
  try{
    const data=await supabaseRequest('reports?status=eq.verified&select=area,category,created_at');
@@ -227,7 +227,7 @@ async async function loadStats(){
  }catch(err){ console.error('Stats error:',err); box.innerHTML='<div class="alert-empty">Statistik belum dapat dimuat.</div>'; }
 }
 
-function loadAlerts(){
+async function loadAlerts(){
  const box=document.getElementById('alerts');
  box.innerHTML='<div class="alert-loading">⏳ Memuat Bali Alert...</div>';
  try{
