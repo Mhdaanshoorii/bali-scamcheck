@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#071c1b">
-<title>Bali ScamCheck — Cek Penipuan Bali</title>
+<title>Bali ScamCheck</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:#f5f7f6;color:#10201f}
 .app{max-width:520px;margin:auto;min-height:100vh;background:#fff}
@@ -22,11 +22,11 @@ main{padding:20px 18px 35px}.section-title{font-size:15px;font-weight:800;margin
 .result{display:none;margin-top:14px;padding:15px;border-radius:16px;background:#f1f8f6;color:#10201f;border:1px solid #d7ebe6;font-size:12px}.result strong{color:#087c6c}.result .result-title{color:#10201f}.result .result-body{color:#30403e}.result .mini{color:#52605e}.result-head{display:flex;align-items:center;gap:10px}.risk{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:19px;background:#e4f5ef}.result-title{font-weight:800;font-size:14px}.result-meta{font-size:10px;color:#70807d;margin-top:2px}.result-body{margin-top:12px;padding-top:10px;border-top:1px solid #dcebe7;line-height:1.55}.mini{display:inline-block;margin-top:9px;padding:5px 8px;border-radius:8px;background:#fff;border:1px solid #dcebe7;font-size:10px}
 .nav{position:sticky;top:0;z-index:10;background:#ffffffee;backdrop-filter:blur(12px);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 10px;border-bottom:1px solid #edf1f0}.nav button{background:transparent;color:#697572;padding:9px 3px;font-size:10px}.nav .nav-active{color:#0c8f7c}.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.guide-card{border:1px solid #e4ecea;border-radius:15px;padding:13px;background:#fff}.guide-card b{font-size:12px}.guide-card span{display:block;font-size:10px;line-height:1.45;color:#75817f;margin-top:5px}.guide-detail{display:none;margin-top:10px;padding:13px;border-radius:14px;background:#f4f8f7;border:1px solid #dcebe7;font-size:11px;line-height:1.55}.guide-detail b{font-size:12px}
 .alert-filter{display:flex;gap:7px;overflow:auto;padding-bottom:3px;margin-bottom:10px}.filter{white-space:nowrap;padding:8px 11px;border-radius:99px;background:#f1f4f3;color:#53615f;font-size:10px}.filter.active{background:#0c8f7c;color:#fff}.alert-item{display:flex;gap:11px;padding:13px;border:1px solid #e4ecea;border-radius:15px;margin-bottom:8px}.alert-icon{width:35px;height:35px;border-radius:11px;background:#fff3dc;display:grid;place-items:center;flex:none}.alert-item b{font-size:12px}.alert-item span{display:block;font-size:10px;color:#75817f;margin-top:3px}.alert-item p{font-size:10px;color:#65716f;line-height:1.45;margin:7px 0 0}
-.alert-search{margin-bottom:9px}.alert-search input{width:100%;border:1px solid #e2eae8;border-radius:13px;background:#f8faf9;padding:12px;font-size:12px}.alert-count{font-size:10px;color:#7a8784;margin:4px 2px 9px}.alert-item.hidden{display:none!important}.modal{display:none;position:fixed;inset:0;background:#071c1bb8;z-index:20;padding:18px;align-items:flex-end;justify-content:center}.modal-box{width:100%;max-width:520px;background:#fff;border-radius:24px 24px 14px 14px;padding:20px;max-height:92vh;overflow:auto}.modal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}.modal-top b{display:block;font-size:17px}.modal-top small{display:block;color:#778582;font-size:11px;margin-top:4px}.modal-top button{background:#f1f4f3;border-radius:10px;width:34px;height:34px}label{display:block;font-size:11px;font-weight:800;margin:12px 0 6px;color:#40514f}select,textarea{width:100%;border:1px solid #dce6e4;border-radius:12px;padding:12px;font:inherit;font-size:13px;background:#fff;outline:none}textarea{resize:vertical}.privacy{margin-top:14px;background:#f1f8f6;border:1px solid #d8eae6;border-radius:12px;padding:11px;font-size:10px;line-height:1.5;color:#61706d}.submit-report{width:100%;margin-top:13px;background:#0c8f7c;color:white;padding:14px;border-radius:12px}
+.modal{display:none;position:fixed;inset:0;background:#071c1bb8;z-index:20;padding:18px;align-items:flex-end;justify-content:center}.modal-box{width:100%;max-width:520px;background:#fff;border-radius:24px 24px 14px 14px;padding:20px;max-height:92vh;overflow:auto}.modal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}.modal-top b{display:block;font-size:17px}.modal-top small{display:block;color:#778582;font-size:11px;margin-top:4px}.modal-top button{background:#f1f4f3;border-radius:10px;width:34px;height:34px}label{display:block;font-size:11px;font-weight:800;margin:12px 0 6px;color:#40514f}select,textarea{width:100%;border:1px solid #dce6e4;border-radius:12px;padding:12px;font:inherit;font-size:13px;background:#fff;outline:none}textarea{resize:vertical}.privacy{margin-top:14px;background:#f1f8f6;border:1px solid #d8eae6;border-radius:12px;padding:11px;font-size:10px;line-height:1.5;color:#61706d}.submit-report{width:100%;margin-top:13px;background:#0c8f7c;color:white;padding:14px;border-radius:12px}
 footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;line-height:1.5}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 2px}.stat-card{padding:12px 8px;text-align:center;background:#f7faf9;border:1px solid #e2ebe8;border-radius:14px}.stat-num{font-size:20px;font-weight:900;color:#0b514a}.stat-label{font-size:9px;color:#65726f;margin-top:3px}.stats-note{font-size:10px;color:#7b8784;margin:8px 2px 0;line-height:1.4}
-.gov-check{margin-top:12px;padding:13px;border-radius:14px;background:#f7faf9;border:1px solid #dfeae7}.gov-title{font-weight:800;font-size:12px;color:#10201f}.gov-note{font-size:10px;color:#687572;line-height:1.45;margin-top:4px}.gov-btn{display:inline-block;margin-top:9px;padding:9px 11px;border-radius:10px;background:#0c8f7c;color:#fff;text-decoration:none;font-size:10px;font-weight:800}.gov-btn.alt{background:#fff;color:#0c8f7c;border:1px solid #b9ddd6;margin-left:5px}
-.score-card{margin:12px 0;padding:13px;border-radius:14px;border:1px solid #d7ebe6;background:#f4f8f6}.score-main{display:flex;align-items:center;gap:9px}.score-icon{font-size:22px}.score-label{font-weight:900;color:#10201f;font-size:14px}.score-desc{margin-top:5px;color:#52605e;font-size:11px;line-height:1.45}.alert-loading,.alert-empty{padding:18px;text-align:center;background:#fff;border:1px solid #e7ecea;border-radius:16px;color:#60706d;font-size:13px}.alert-item{display:flex;gap:12px;padding:16px;margin-bottom:10px;background:#fff;border:1px solid #e7ecea;border-radius:16px;box-shadow:0 5px 16px rgba(0,0,0,.04)}.alert-icon{width:40px;height:40px;display:grid;place-items:center;background:#fff4df;border-radius:12px;font-size:20px;flex:0 0 auto}.alert-item b{display:block;color:#10201f;font-size:14px}.alert-item span{display:block;margin-top:4px;color:#6a7774;font-size:11px}.alert-item p{margin:8px 0 0;color:#44524f;font-size:12px;line-height:1.5}</style>
+.score-card{margin:12px 0;padding:13px;border-radius:14px;border:1px solid #d7ebe6;background:#f4f8f6}.score-main{display:flex;align-items:center;gap:9px}.score-icon{font-size:22px}.score-label{font-weight:900;color:#10201f;font-size:14px}.score-desc{margin-top:5px;color:#52605e;font-size:11px;line-height:1.45}
+.official-intro{font-size:11px;color:#687774;line-height:1.5;margin:-10px 0 10px}.official-grid{display:grid;gap:9px}.official-card{display:grid;grid-template-columns:38px 1fr 20px;align-items:center;gap:10px;padding:13px;border:1px solid #dcebe7;border-radius:15px;background:#fff;text-decoration:none;color:#17332e}.official-icon{width:38px;height:38px;border-radius:12px;background:#eef8f5;display:grid;place-items:center;font-size:19px}.official-card b{display:block;font-size:12px}.official-card span{display:block;font-size:10px;color:#71807c;margin-top:3px;line-height:1.35}.official-card strong{font-size:18px;color:#0c8f7c}.official-note{margin-top:10px;padding:11px 12px;border-radius:12px;background:#f1f7f5;border:1px solid #dcebe7;color:#667570;font-size:10px;line-height:1.5}.loading{padding:18px;text-align:center;color:#71807c;font-size:11px}.empty-alert{padding:18px;text-align:center;color:#71807c;font-size:11px;border:1px dashed #dcebe7;border-radius:15px}.alert-item{align-items:flex-start!important}
+</style>
 </head>
 <body>
 <div class="app">
@@ -60,13 +60,31 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
 
 
   <div class="section-title" style="margin-top:22px">🚨 Bali Alert</div>
-  <div class="alert-search"><input id="alertQuery" oninput="applyAlertFilters()" placeholder="Cari modus, area, atau kategori..."></div>
-  <div class="alert-filter" id="alertFilters"><button class="filter active" onclick="filterAlerts('Semua',this)">Semua</button></div>
-  <div id="alerts"><div class="alert-loading">⏳ Memuat Bali Alert...</div></div>
+  <div class="alert-filter">
+    <button class="filter active" data-area="Semua">Semua</button>
+    <button class="filter" data-area="Badung">Badung</button>
+    <button class="filter" data-area="Denpasar">Denpasar</button>
+    <button class="filter" data-area="Gianyar">Gianyar</button>
+  </div>
+  <div id="alerts"><div class="loading">⏳ Memuat Bali Alert...</div></div>
 
-
-  <div class="section-title" style="margin-top:22px">📊 Bali Safety Stats</div>
-  <div id="stats"><div class="alert-loading">⏳ Memuat statistik...</div></div>
+  <div class="section-title" style="margin-top:22px">🏛️ Verifikasi Resmi</div>
+  <div class="official-intro">Bali ScamCheck memakai database komunitas. Untuk pemeriksaan resmi, gunakan kanal pemerintah berikut.</div>
+  <div class="official-grid">
+    <a class="official-card" id="officialSiber" href="https://laporsiberbali.id/" target="_blank" rel="noopener noreferrer">
+      <div class="official-icon">👮</div><div><b>LAPOR SIBER BALI</b><span>Cek rekening / nomor terlapor • Polda Bali</span></div><strong>↗</strong>
+    </a>
+    <a class="official-card" id="officialAduan" href="https://aduannomor.id/" target="_blank" rel="noopener noreferrer">
+      <div class="official-icon">📱</div><div><b>AduanNomor</b><span>Cek nomor seluler • Komdigi</span></div><strong>↗</strong>
+    </a>
+    <a class="official-card" id="officialRek" href="https://cekrekening.id/" target="_blank" rel="noopener noreferrer">
+      <div class="official-icon">🏦</div><div><b>CekRekening</b><span>Cek rekening / e-wallet • Komdigi</span></div><strong>↗</strong>
+    </a>
+    <a class="official-card" id="officialIasc" href="https://iasc.ojk.go.id/" target="_blank" rel="noopener noreferrer">
+      <div class="official-icon">🛡️</div><div><b>IASC OJK</b><span>Jalur pelaporan penipuan transaksi keuangan</span></div><strong>↗</strong>
+    </a>
+  </div>
+  <div class="official-note">🔐 <b>Penting:</b> Bali ScamCheck tidak mengklaim memiliki atau mengendalikan database pemerintah. Tombol di atas membuka layanan resmi masing-masing.</div>
 
   <div class="section-title" style="margin-top:22px">📚 Safety Guide</div>
   <div class="guide-grid">
@@ -88,8 +106,7 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
   <div class="modal-box">
     <div class="modal-top"><div><b>🚨 Laporkan Penipuan</b><small>Bantu lindungi pengguna Bali lainnya.</small></div><button onclick="closeReport()">✕</button></div>
     <label>Yang ingin dilaporkan</label>
-    <input id="reportTarget" maxlength="50" placeholder="Nomor HP / rekening / e-wallet">
-    <input id="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" placeholder="Jangan diisi">
+    <input id="reportTarget" placeholder="Nomor HP / rekening / e-wallet">
     <label>Jenis data</label>
     <select id="reportType">
       <option value="phone">Nomor HP / WhatsApp</option>
@@ -105,13 +122,13 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
     <label>Area di Bali</label>
     <select id="reportArea"><option>Denpasar</option><option>Badung</option><option>Gianyar</option><option>Tabanan</option><option>Buleleng / Singaraja</option><option>Karangasem</option><option>Bangli</option><option>Klungkung</option><option>Jembrana</option><option>Lainnya</option></select>
     <label>Ceritakan singkat</label>
-    <textarea id="reportStory" rows="4" maxlength="1000" placeholder="Apa yang terjadi? Hindari menulis alamat rumah atau data pribadi."></textarea>
+    <textarea id="reportStory" rows="4" placeholder="Apa yang terjadi? Hindari menulis alamat rumah atau data pribadi."></textarea>
     <div class="privacy">🔒 Laporan akan berstatus <b>Menunggu Verifikasi</b>. Jangan masukkan KTP, password, PIN, OTP, atau data sensitif.</div>
     <button class="submit-report" onclick="submitReport()">KIRIM LAPORAN</button>
   </div>
 </div>
 
-<footer>Bali ScamCheck • V7 • Bali Alert Dinamis<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
+<footer>Bali ScamCheck • V4 • Supabase Fixed<br>Informasi berdasarkan laporan komunitas dan verifikasi. Hasil bukan penetapan identitas seseorang.</footer>
 </div>
 
 
@@ -147,189 +164,64 @@ function esc(v) {
   return String(v ?? "").replace(/[<>&"]/g, "");
 }
 </script>
-
 <script>
-function focusSearch(){document.getElementById('q').focus();window.scrollTo({top:0,behavior:'smooth'})}
-function safe(v){return v.replace(/[<>&"]/g,'')}
-
+function focusSearch(){const q=document.getElementById('q');if(q)q.focus();window.scrollTo({top:0,behavior:'smooth'})}
+function safe(v){return String(v??'').replace(/[<>&"]/g,'')}
 function safeScore(count){
  if(count===0)return{label:'BELUM ADA LAPORAN',icon:'🟢',desc:'Belum ditemukan laporan terverifikasi untuk target ini.'};
  if(count===1)return{label:'PERLU WASPADA',icon:'🟡',desc:'Ada 1 laporan terverifikasi dari komunitas.'};
  if(count<=3)return{label:'WASPADA TINGGI',icon:'🟠',desc:'Ada beberapa laporan terverifikasi dari komunitas.'};
  return{label:'RISIKO TINGGI',icon:'🔴',desc:'Ada banyak laporan terverifikasi dari komunitas.'};
 }
-
-function govLinks(target){
- const raw=(target||'').trim();
- const normalized=raw.replace(/\s+/g,'');
- const looksPhone=/^(?:\+62|62|08)\d{7,13}$/.test(normalized);
- if(looksPhone){
-   return '<div class="gov-check"><div class="gov-title">🏛️ Pemeriksaan resmi pemerintah</div><div class="gov-note">Bali ScamCheck adalah database komunitas. Untuk pemeriksaan resmi, cek juga nomor ini melalui layanan Komdigi.</div><a class="gov-btn" href="https://aduannomor.id/" target="_blank" rel="noopener">CEK DI ADUANNOMOR ↗</a></div>';
- }
- return '<div class="gov-check"><div class="gov-title">🏛️ Pemeriksaan resmi pemerintah</div><div class="gov-note">Untuk rekening atau e-wallet, lakukan pemeriksaan tambahan melalui layanan resmi Komdigi.</div><a class="gov-btn" href="https://cekrekening.id/" target="_blank" rel="noopener">CEK DI CEKREKENING ↗</a></div>';
+function isPhone(v){const d=String(v).replace(/\D/g,'');return /^(08|62|\+62)/.test(String(v).replace(/\s/g,''))||d.length>=10}
+function officialForQuery(q){
+ const phone=isPhone(q);
+ const a=document.getElementById('officialAduan');
+ const r=document.getElementById('officialRek');
+ if(a)a.style.display=phone?'grid':'none';
+ if(r)r.style.display=phone?'none':'grid';
 }
-
 async function check(){
  const q=document.getElementById('q').value.trim(),r=document.getElementById('result');
- if(!q){r.style.display='block';r.innerHTML='Masukkan nomor HP, WhatsApp, rekening, atau e-wallet terlebih dahulu.';return}
- const x=esc(q);
- r.style.display='block';
+ if(!q){r.style.display='block';r.innerHTML='<div class="result-body">Masukkan nomor HP, WhatsApp, rekening, atau e-wallet terlebih dahulu.</div>';return}
+ officialForQuery(q); const x=safe(q); r.style.display='block';
  r.innerHTML='<div class="result-head"><div class="risk">⏳</div><div><div class="result-title">Sedang mengecek...</div><div class="result-meta">'+x+'</div></div></div>';
  try{
-   const data=await supabaseRequest('reports?target=eq.'+encodeURIComponent(q)+'&status=eq.verified&select=target,target_type,category,area,story,created_at&order=created_at.desc');
-   if(!data.length){
-     const score=safeScore(0);
-     r.innerHTML='<div class="result-head"><div class="risk">'+score.icon+'</div><div><div class="result-title">Belum ada laporan terverifikasi</div><div class="result-meta">'+x+'</div></div></div><div class="score-card"><div class="score-main"><span class="score-icon">'+score.icon+'</span><span class="score-label">'+score.label+'</span></div><div class="score-desc">'+score.desc+'</div></div><div class="result-body">Kami belum menemukan laporan terverifikasi untuk data tersebut.<br><span class="mini">Status: Belum ditemukan</span> <span class="mini">Sumber: Community</span></div>'+govLinks(q);
-     return;
-   }
-   const item=data[0], score=safeScore(data.length);
-   r.innerHTML='<div class="result-head"><div class="risk">'+score.icon+'</div><div><div class="result-title">Ada laporan terverifikasi</div><div class="result-meta">'+esc(item.target)+'</div></div></div><div class="score-card"><div class="score-main"><span class="score-icon">'+score.icon+'</span><span class="score-label">'+score.label+'</span></div><div class="score-desc">'+score.desc+'</div></div><div class="result-body"><b>'+data.length+' laporan terverifikasi</b><br><b>Kategori:</b> '+esc(item.category)+'<br><b>Area:</b> '+esc(item.area)+'<br><br>'+esc(item.story)+'<br><span class="mini">Status: Diverifikasi</span> <span class="mini">Sumber: Community</span></div>'+govLinks(q);
- }catch(err){
-   r.innerHTML='<div class="result-head"><div class="risk">⚠️</div><div><div class="result-title">Koneksi database gagal</div><div class="result-meta">Coba lagi beberapa saat.</div></div></div>';
-   console.error(err);
- }
+  const data=await supabaseRequest('reports?target=eq.'+encodeURIComponent(q)+'&status=eq.verified&select=target,target_type,category,area,story,created_at&order=created_at.desc');
+  const score=safeScore(data.length);
+  if(!data.length){r.innerHTML='<div class="result-head"><div class="risk">'+score.icon+'</div><div><div class="result-title">Belum ada laporan terverifikasi</div><div class="result-meta">'+x+'</div></div></div><div class="score-card"><div class="score-main"><span class="score-icon">'+score.icon+'</span><span class="score-label">'+score.label+'</span></div><div class="score-desc">'+score.desc+'</div></div><div class="result-body">Kami belum menemukan laporan terverifikasi untuk data tersebut.<br><span class="mini">Status: Belum ditemukan</span> <span class="mini">Sumber: Community</span></div>';return}
+  const item=data[0];
+  r.innerHTML='<div class="result-head"><div class="risk">'+score.icon+'</div><div><div class="result-title">Ada laporan terverifikasi</div><div class="result-meta">'+x+'</div></div></div><div class="score-card"><div class="score-main"><span class="score-icon">'+score.icon+'</span><span class="score-label">'+score.label+'</span></div><div class="score-desc">'+score.desc+'</div></div><div class="result-body"><b>'+data.length+' laporan terverifikasi</b><br><b>Kategori:</b> '+safe(item.category)+'<br><b>Area:</b> '+safe(item.area)+'<br><br>'+safe(item.story)+'<br><span class="mini">Status: Diverifikasi</span> <span class="mini">Sumber: Community</span></div>';
+ }catch(err){console.error(err);r.innerHTML='<div class="result-head"><div class="risk">⚠️</div><div><div class="result-title">Koneksi database gagal</div><div class="result-meta">Coba lagi beberapa saat.</div></div></div><div class="result-body">Periksa koneksi internet lalu coba kembali.</div>'}
 }
-function showGuide(type){
- const d=document.getElementById('guideDetail');
- const data={
-  DP:['💸 Jangan buru-buru DP','Pastikan nama usaha, lokasi, harga, dan metode pembayaran masuk akal. Untuk transaksi bernilai besar, lakukan verifikasi tambahan sebelum transfer.'],
-  WA:['💬 Cek WhatsApp','Nomor baru yang mengaku teman, pemilik villa, driver, atau admin sebaiknya diverifikasi lewat kanal lain yang sudah kamu kenal.'],
-  LINK:['🔗 Waspada link','Jangan masukkan password, PIN, atau OTP setelah membuka link dari chat yang tidak kamu percaya. Periksa alamat situs sebelum login.'],
-  HARGA:['🏷️ Harga terlalu murah','Harga jauh di bawah pasar bukan bukti penipuan, tetapi merupakan sinyal untuk melakukan pengecekan ekstra dan tidak terburu-buru.']
- };
- d.style.display='block'; d.innerHTML='<b>'+data[type][0]+'</b><br>'+data[type][1];
-}
-function alertIcon(category){
- const c=(category||'').toLowerCase();
- if(c.includes('rental')) return '🏍️';
- if(c.includes('villa')||c.includes('homestay')) return '🏠';
- if(c.includes('whatsapp')) return '💬';
- if(c.includes('ticket')||c.includes('event')) return '🎟️';
- if(c.includes('phishing')) return '🔗';
- if(c.includes('investasi')) return '💰';
- if(c.includes('job')) return '💼';
- if(c.includes('tour')||c.includes('aktivitas')) return '🏝️';
- return '🚨';
-}
-function alertDate(value){
- if(!value) return '';
- try{return new Intl.DateTimeFormat('id-ID',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(value));}
- catch(e){return '';}
-}
-let allAlerts=[];
-async function loadStats(){
- const box=document.getElementById('stats');
- try{
-   const data=await supabaseRequest('reports?status=eq.verified&select=area,category,created_at');
-   const areas=new Set(data.map(x=>x.area).filter(Boolean));
-   const categories=new Set(data.map(x=>x.category).filter(Boolean));
-   box.innerHTML='<div class="stats-grid"><div class="stat-card"><div class="stat-num">'+data.length+'</div><div class="stat-label">Laporan terverifikasi</div></div><div class="stat-card"><div class="stat-num">'+allAlerts.length+'</div><div class="stat-label">Alert aktif</div></div><div class="stat-card"><div class="stat-num">'+areas.size+'</div><div class="stat-label">Area tercakup</div></div></div><div class="stats-note">Data berdasarkan laporan komunitas yang telah diverifikasi admin. Statistik ini bukan penilaian identitas seseorang.</div>';
- }catch(err){ console.error('Stats error:',err); box.innerHTML='<div class="alert-empty">Statistik belum dapat dimuat.</div>'; }
-}
-
 async function loadAlerts(){
- const box=document.getElementById('alerts');
- box.innerHTML='<div class="alert-loading">⏳ Memuat Bali Alert...</div>';
+ const box=document.getElementById('alerts'); if(!box)return;
  try{
-   allAlerts=await supabaseRequest('reports?status=eq.verified&is_alert=eq.true&select=alert_title,area,category,story,created_at&order=created_at.desc');
-   buildAlertFilters();
-   renderAlerts();
-   loadStats();
- }catch(err){
-   console.error('Bali Alert error:',err);
-   box.innerHTML='<div class="alert-empty">⚠️ Bali Alert belum dapat dimuat. Coba refresh halaman.</div>';
- }
+  const data=await supabaseRequest('reports?status=eq.verified&is_alert=eq.true&select=alert_title,area,category,story,created_at&order=created_at.desc&limit=20');
+  if(!data.length){box.innerHTML='<div class="empty-alert">Belum ada Bali Alert aktif.</div>';return}
+  box.innerHTML=data.map(x=>'<div class="alert-item" data-area="'+safe(x.area)+'"><div class="alert-icon">🚨</div><div><b>'+safe(x.alert_title||'Peringatan penipuan')+'</b><span>'+safe(x.area)+' • '+safe(x.category)+'</span><p>'+safe(x.story)+'</p></div></div>').join('');
+ }catch(e){console.error(e);box.innerHTML='<div class="empty-alert">⚠️ Bali Alert belum dapat dimuat.</div>'}
 }
-function buildAlertFilters(){
- const wrap=document.getElementById('alertFilters');
- const areas=[...new Set(allAlerts.map(x=>x.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'id'));
- wrap.innerHTML='<button class="filter active" data-filter-area="Semua" onclick="filterAlerts(\'Semua\',this)">Semua</button>'+
-   areas.map(a=>'<button class="filter" data-filter-area="'+esc(a)+'" onclick="filterAlerts(\''+esc(a).replace(/'/g,"\\'")+'\',this)">'+esc(a)+'</button>').join('');
-}
-function renderAlerts(){
- const box=document.getElementById('alerts');
- if(!allAlerts.length){box.innerHTML='<div class="alert-empty">🛡️ Belum ada Bali Alert aktif saat ini.</div>';return;}
- box.innerHTML='<div class="alert-count" id="alertCount"></div>'+allAlerts.map((item,i)=>{
-   const title=esc(item.alert_title||'Peringatan keamanan Bali');
-   const area=esc(item.area||'Bali'); const category=esc(item.category||'Lainnya');
-   const story=esc(item.story||'Lakukan verifikasi tambahan sebelum bertransaksi.'); const date=alertDate(item.created_at);
-   const hay=(title+' '+area+' '+category+' '+story).toLowerCase();
-   return '<div class="alert-item" data-area="'+area+'" data-search="'+esc(hay)+'"><div class="alert-icon">'+alertIcon(category)+'</div><div><b>'+title+'</b><span>'+area+' • '+category+(date?' • '+date:'')+'</span><p>'+story+'</p><span>✓ Diverifikasi • Community Report</span></div></div>';
- }).join('');
- applyAlertFilters();
-}
-let selectedAlertArea='Semua';
-function filterAlerts(area,btn){
- selectedAlertArea=area;
- document.querySelectorAll('#alertFilters .filter').forEach(x=>x.classList.remove('active'));
- if(btn) btn.classList.add('active');
- applyAlertFilters();
-}
-function applyAlertFilters(){
- const q=(document.getElementById('alertQuery')?.value||'').trim().toLowerCase();
- let visible=0;
- document.querySelectorAll('.alert-item').forEach(x=>{
-   const area=x.dataset.area||''; const hay=x.dataset.search||'';
-   const okArea=selectedAlertArea==='Semua'||area===selectedAlertArea;
-   const okQuery=!q||hay.includes(q);
-   x.classList.toggle('hidden',!(okArea&&okQuery));
-   if(okArea&&okQuery) visible++;
- });
- const count=document.getElementById('alertCount');
- if(count) count.textContent=visible+' alert ditampilkan';
-}
-function report(){
- document.getElementById('reportModal').style.display='flex';
- document.getElementById('reportTarget').value=document.getElementById('q').value.trim();
-}
+function filterAlerts(area,btn){document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');document.querySelectorAll('.alert-item').forEach(x=>x.style.display=(area==='Semua'||x.dataset.area===area)?'flex':'none')}
+function report(){document.getElementById('reportModal').style.display='flex';document.getElementById('reportTarget').value=document.getElementById('q').value.trim()}
 function closeReport(){document.getElementById('reportModal').style.display='none'}
 async function submitReport(){
- const target=document.getElementById('reportTarget').value.trim();
- const story=document.getElementById('reportStory').value.trim();
- const honeypot=document.getElementById('website').value.trim();
- const cooldownKey='baliScamCheckLastReportV8';
- const last=Number(localStorage.getItem(cooldownKey)||0);
- if(honeypot){ console.warn('Spam blocked'); return; }
- if(Date.now()-last < 60000){
-   const wait=Math.ceil((60000-(Date.now()-last))/1000);
-   alert('Laporan baru bisa dikirim lagi dalam '+wait+' detik.'); return;
- }
+ const target=document.getElementById('reportTarget').value.trim(),story=document.getElementById('reportStory').value.trim();
  if(!target||!story){alert('Isi minimal nomor/rekening dan kronologi singkat.');return}
- if(target.length<4||target.length>50){alert('Nomor/rekening harus 4–50 karakter.');return}
- if(story.length<20){alert('Kronologi minimal 20 karakter agar bisa diverifikasi.');return}
- if(story.length>1000){alert('Kronologi maksimal 1000 karakter.');return}
- const payload={
-  target:target,
-  target_type:document.getElementById('reportType').value,
-  category:document.getElementById('reportCategory').value,
-  area:document.getElementById('reportArea').value,
-  story:story,
-  status:'pending'
- };
- const btn=document.querySelector('.submit-report');
- btn.disabled=true; btn.textContent='MENGIRIM...';
- try{
-   await supabaseRequest('reports',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(payload)});
-   localStorage.setItem(cooldownKey,String(Date.now()));
-   alert('Laporan berhasil dikirim. Status: Menunggu Verifikasi.');
-   closeReport();
-   document.getElementById('reportStory').value='';
- }catch(err){
-   console.error('Bali ScamCheck Supabase error:', err);
-   const msg = err && err.message ? err.message : 'Unknown error';
-   alert('Laporan gagal dikirim.\n\nDetail: ' + msg);
- }finally{
-   btn.disabled=false; btn.textContent='KIRIM LAPORAN';
- }
+ const payload={target:target,target_type:document.getElementById('reportType').value,category:document.getElementById('reportCategory').value,area:document.getElementById('reportArea').value,story:story,status:'pending'};
+ const btn=document.querySelector('.submit-report');btn.disabled=true;btn.textContent='MENGIRIM...';
+ try{await supabaseRequest('reports',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(payload)});alert('Laporan berhasil dikirim. Status: Menunggu Verifikasi.');closeReport();document.getElementById('reportStory').value=''}catch(err){alert('Laporan gagal dikirim.\n\nDetail: '+(err&&err.message?err.message:'Unknown error'))}finally{btn.disabled=false;btn.textContent='KIRIM LAPORAN'}
 }
-document.addEventListener('DOMContentLoaded', function(){
-  const btn=document.getElementById('checkBtn');
-  const input=document.getElementById('q');
-  if(btn) btn.addEventListener('click', check);
-  if(input) input.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); check(); } });
-  loadAlerts();
+function showGuide(type){const d=document.getElementById('guideDetail');const data={DP:['💸 Jangan buru-buru DP','Pastikan nama usaha, lokasi, harga, dan metode pembayaran masuk akal. Untuk transaksi bernilai besar, lakukan verifikasi tambahan sebelum transfer.'],WA:['💬 Cek WhatsApp','Nomor baru yang mengaku teman, pemilik villa, driver, atau admin sebaiknya diverifikasi lewat kanal lain yang sudah kamu kenal.'],LINK:['🔗 Waspada link','Jangan masukkan password, PIN, atau OTP setelah membuka link dari chat yang tidak kamu percaya. Periksa alamat situs sebelum login.'],HARGA:['🏷️ Harga terlalu murah','Harga jauh di bawah pasar bukan bukti penipuan, tetapi merupakan sinyal untuk melakukan pengecekan ekstra dan tidak terburu-buru.']};d.style.display='block';d.innerHTML='<b>'+data[type][0]+'</b><br>'+data[type][1]}
+
+document.addEventListener('DOMContentLoaded',function(){
+ const btn=document.getElementById('checkBtn');const input=document.getElementById('q');
+ if(btn)btn.addEventListener('click',check);if(input)input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check()}});
+ document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>filterAlerts(b.dataset.area,b)));
+ officialForQuery(input?input.value:''); loadAlerts();
 });
-window.check = check;
+window.check=check;
+</script>
 </script>
 </body>
 </html>
