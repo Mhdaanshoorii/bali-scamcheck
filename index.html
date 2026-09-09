@@ -83,7 +83,8 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
   <div class="modal-box">
     <div class="modal-top"><div><b>🚨 Laporkan Penipuan</b><small>Bantu lindungi pengguna Bali lainnya.</small></div><button onclick="closeReport()">✕</button></div>
     <label>Yang ingin dilaporkan</label>
-    <input id="reportTarget" placeholder="Nomor HP / rekening / e-wallet">
+    <input id="reportTarget" maxlength="50" placeholder="Nomor HP / rekening / e-wallet">
+    <input id="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" placeholder="Jangan diisi">
     <label>Jenis data</label>
     <select id="reportType">
       <option value="phone">Nomor HP / WhatsApp</option>
@@ -99,7 +100,7 @@ footer{text-align:center;color:#94a19f;font-size:10px;padding:10px 20px 25px;lin
     <label>Area di Bali</label>
     <select id="reportArea"><option>Denpasar</option><option>Badung</option><option>Gianyar</option><option>Tabanan</option><option>Buleleng / Singaraja</option><option>Karangasem</option><option>Bangli</option><option>Klungkung</option><option>Jembrana</option><option>Lainnya</option></select>
     <label>Ceritakan singkat</label>
-    <textarea id="reportStory" rows="4" placeholder="Apa yang terjadi? Hindari menulis alamat rumah atau data pribadi."></textarea>
+    <textarea id="reportStory" rows="4" maxlength="1000" placeholder="Apa yang terjadi? Hindari menulis alamat rumah atau data pribadi."></textarea>
     <div class="privacy">🔒 Laporan akan berstatus <b>Menunggu Verifikasi</b>. Jangan masukkan KTP, password, PIN, OTP, atau data sensitif.</div>
     <button class="submit-report" onclick="submitReport()">KIRIM LAPORAN</button>
   </div>
@@ -259,7 +260,18 @@ function closeReport(){document.getElementById('reportModal').style.display='non
 async function submitReport(){
  const target=document.getElementById('reportTarget').value.trim();
  const story=document.getElementById('reportStory').value.trim();
+ const honeypot=document.getElementById('website').value.trim();
+ const cooldownKey='baliScamCheckLastReportV8';
+ const last=Number(localStorage.getItem(cooldownKey)||0);
+ if(honeypot){ console.warn('Spam blocked'); return; }
+ if(Date.now()-last < 60000){
+   const wait=Math.ceil((60000-(Date.now()-last))/1000);
+   alert('Laporan baru bisa dikirim lagi dalam '+wait+' detik.'); return;
+ }
  if(!target||!story){alert('Isi minimal nomor/rekening dan kronologi singkat.');return}
+ if(target.length<4||target.length>50){alert('Nomor/rekening harus 4–50 karakter.');return}
+ if(story.length<20){alert('Kronologi minimal 20 karakter agar bisa diverifikasi.');return}
+ if(story.length>1000){alert('Kronologi maksimal 1000 karakter.');return}
  const payload={
   target:target,
   target_type:document.getElementById('reportType').value,
@@ -272,6 +284,7 @@ async function submitReport(){
  btn.disabled=true; btn.textContent='MENGIRIM...';
  try{
    await supabaseRequest('reports',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify(payload)});
+   localStorage.setItem(cooldownKey,String(Date.now()));
    alert('Laporan berhasil dikirim. Status: Menunggu Verifikasi.');
    closeReport();
    document.getElementById('reportStory').value='';
