@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Bali ScamCheck — Admin V2</title>
+<title>Bali ScamCheck — Admin V4</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#071311;color:#edf7f3}
 .wrap{max-width:760px;margin:auto;padding:18px}.brand{font-size:24px;font-weight:800}.sub,.muted{color:#9bb0aa}.sub{margin:3px 0 18px}
@@ -12,7 +12,7 @@ input,textarea,button{width:100%;padding:12px 13px;border-radius:11px;border:1px
 button{cursor:pointer;font-weight:800}.primary{background:#dff7ec;color:#0a1714;border:0}.danger{background:#401b1b}.ghost{background:transparent}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px}.logout{width:auto;margin:0;padding:9px 12px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#0b1816;border:1px solid #28403a;border-radius:14px;padding:12px}.num{font-size:23px;font-weight:800}.label{font-size:12px;color:#9bb0aa}
-.filters{display:grid;grid-template-columns:1fr auto;gap:8px}.refresh{width:auto;margin:0;padding:11px 15px}
+.filters{display:grid;grid-template-columns:1fr auto;gap:8px}.chips{display:flex;gap:7px;overflow:auto;margin-top:9px}.chip{width:auto;margin:0;padding:8px 11px;font-size:12px;white-space:nowrap}.chip.active{background:#dff7ec;color:#0a1714;border:0}.refresh{width:auto;margin:0;padding:11px 15px}
 .report{border-top:1px solid #28403a;padding:16px 0}.report:first-child{border-top:0}.target{font-size:18px;font-weight:800;word-break:break-word}.meta{font-size:12px;color:#9bb0aa;line-height:1.5;margin:5px 0 10px}.story{white-space:pre-wrap;line-height:1.45;color:#d9e7e3}.badge{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800;background:#332c10;color:#f2dc83}.badge.v{background:#123b2b;color:#9ee2bd}.badge.r{background:#401c1c;color:#ffaaaa}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note{margin-top:10px}.hidden{display:none!important}
 @media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
@@ -22,7 +22,7 @@ button{cursor:pointer;font-weight:800}.primary{background:#dff7ec;color:#0a1714;
 </head>
 <body>
 <div class="wrap">
-<div class="brand">BALI SCAMCHECK 🔐</div><div class="sub">Admin Verification V2</div>
+<div class="brand">BALI SCAMCHECK 🔐</div><div class="sub">Admin Verification V4 • Alert Control</div>
 
 <section id="login" class="card">
 <h2>Login Admin</h2><div class="muted">Gunakan akun admin Supabase.</div>
@@ -41,7 +41,7 @@ button{cursor:pointer;font-weight:800}.primary{background:#dff7ec;color:#0a1714;
 </div>
 
 <div class="card">
-<div class="filters"><input id="search" placeholder="Cari nomor/rekening..." oninput="render()"><button class="refresh primary" onclick="loadAll()">↻</button></div>
+<div class="filters"><input id="search" placeholder="Cari nomor/rekening..." oninput="render()"><button class="refresh primary" onclick="loadAll()">↻</button></div><div class="chips"><button class="chip active" data-filter="all" onclick="setFilter('all')">Semua</button><button class="chip ghost" data-filter="pending" onclick="setFilter('pending')">Pending</button><button class="chip ghost" data-filter="verified" onclick="setFilter('verified')">Verified</button><button class="chip ghost" data-filter="rejected" onclick="setFilter('rejected')">Rejected</button><button class="chip ghost" data-filter="alert" onclick="setFilter('alert')">🚨 Alert</button></div>
 </div>
 
 <div id="list" class="card"><div class="muted">Memuat...</div></div>
@@ -51,7 +51,7 @@ button{cursor:pointer;font-weight:800}.primary{background:#dff7ec;color:#0a1714;
 <script>
 const SUPABASE_URL="https://mqfipqpmsuapfctotjzo.supabase.co";
 const SUPABASE_KEY="sb_publishable_4sFZXYku2HwgJ7wvHWwKLA_tN-nKxk-";
-let accessToken="", rows=[];
+let accessToken="", rows=[], activeFilter="all";
 
 async function auth(path,body){
  const r=await fetch(SUPABASE_URL+"/auth/v1/"+path,{method:"POST",headers:{"apikey":SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
@@ -83,9 +83,18 @@ async function loadAll(){
   render();
  }catch(e){list.innerHTML="<div class='muted'>Gagal memuat: "+esc(e.message)+"</div>"}
 }
+function setFilter(f){
+ activeFilter=f;
+ document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));
+ render();
+}
 function render(){
  const q=search.value.trim().toLowerCase();
- const data=rows.filter(r=>!q||String(r.target).toLowerCase().includes(q)||String(r.story).toLowerCase().includes(q));
+ const data=rows.filter(r=>{
+  const matchesSearch=!q||String(r.target).toLowerCase().includes(q)||String(r.story).toLowerCase().includes(q)||String(r.alert_title||'').toLowerCase().includes(q);
+  const matchesFilter=activeFilter==='all'||activeFilter===r.status||(activeFilter==='alert'&&r.is_alert);
+  return matchesSearch&&matchesFilter;
+ });
  if(!data.length){list.innerHTML="<div class='muted'>Tidak ada laporan.</div>";return}
  list.innerHTML=data.map(r=>{
   const pending=r.status==="pending";
@@ -94,7 +103,7 @@ function render(){
    <div class="meta">${esc(r.target_type)} • ${esc(r.category)} • ${esc(r.area)}<br>${new Date(r.created_at).toLocaleString("id-ID")} <span class="badge ${r.status==="verified"?"v":r.status==="rejected"?"r":""}">${esc(r.status)}</span></div>
    <div class="story">${esc(r.story)}</div>
    ${r.admin_note?`<div class="note muted"><b>Catatan admin:</b> ${esc(r.admin_note)}</div>`:""}
-   ${r.is_alert?`<div class="alert-box"><div class="alert-on">🚨 ALERT AKTIF</div><div class="alert-title">${esc(r.alert_title||'Bali Scam Alert')}</div><div class="alert-actions"><button class="ghost" onclick="toggleAlert(${r.id},false)">NONAKTIFKAN ALERT</button></div></div>`:""}
+   ${r.is_alert?`<div class="alert-box"><div class="alert-on">🚨 ALERT AKTIF</div><div class="alert-title">${esc(r.alert_title||'Bali Scam Alert')}</div><div class="alert-actions"><input id="edit_alert_${r.id}" value="${esc(r.alert_title||'')}" placeholder="Judul alert"><button class="primary" onclick="updateAlertTitle(${r.id})">SIMPAN JUDUL</button><button class="ghost" onclick="toggleAlert(${r.id},false)">NONAKTIFKAN ALERT</button></div></div>`:""}
    ${pending?`<div class="note"><textarea id="note_${r.id}" placeholder="Catatan admin / alasan keputusan (opsional)"></textarea>
    <div class="actions"><button class="primary" onclick="setStatus(${r.id},'verified')">✓ VERIFIKASI</button><button class="danger" onclick="setStatus(${r.id},'rejected')">✕ TOLAK</button></div></div>`:""}
    ${r.status==="verified"&&!r.is_alert?`<div class="note"><input id="alert_${r.id}" placeholder="Judul alert, contoh: Waspada modus rental motor di Canggu"><button class="primary" onclick="toggleAlert(${r.id},true)">🚨 JADIKAN ALERT</button></div>`:""}
@@ -119,6 +128,15 @@ async function toggleAlert(id,on){
   await api("reports?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({is_alert:on,alert_title:on?title:null})});
   await loadAll();
  }catch(e){alert("Gagal mengubah alert:\n"+e.message)}
+}
+async function updateAlertTitle(id){
+ const title=(document.getElementById("edit_alert_"+id)?.value||"").trim();
+ if(!title){alert("Judul alert tidak boleh kosong.");return}
+ try{
+  await api("reports?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({alert_title:title,is_alert:true})});
+  await loadAll();
+ }catch(e){alert("Gagal menyimpan judul alert:
+"+e.message)}
 }
 function logout(){accessToken="";sessionStorage.removeItem("bsc_admin_token");location.reload()}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
