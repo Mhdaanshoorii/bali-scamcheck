@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071311">
+<title>Bali ScamCheck — Admin V13</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#071311;color:#edf7f3;font-family:system-ui,-apple-system,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:18px 14px 40px}.brand{font-size:24px;font-weight:900}.sub,.muted{color:#9bb0aa}.sub{font-size:13px;margin:3px 0 14px}
+.card{background:#10201d;border:1px solid #28403a;border-radius:18px;padding:15px;margin:11px 0;box-shadow:0 8px 25px #0003}
+h2,h3{margin:0 0 9px}input,textarea,button{font:inherit}input,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #36514a;background:#0b1816;color:#fff;font-size:16px}input{margin-top:8px}button{min-height:46px;padding:11px 14px;border-radius:12px;border:1px solid #36514a;background:#0b1816;color:#fff;font-weight:850;cursor:pointer}.primary{background:#dff7ec;color:#081510;border:0}.danger{background:#401b1b}.ghost{background:transparent}
+.hidden{display:none!important}.loginbtn{width:100%;margin-top:9px}.msg{min-height:20px;font-size:13px;margin:9px 0 0}.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#0b1816;border:1px solid #28403a;border-radius:14px;padding:11px}.num{font-size:21px;font-weight:900}.label{font-size:10px;color:#9bb0aa}
+.filters{display:grid;grid-template-columns:1fr 48px;gap:8px}.filters input{margin:0}.filters button{padding:0}.chips{display:flex;gap:7px;overflow:auto;margin-top:8px}.chip{min-width:max-content}.chip.active{background:#dff7ec;color:#081510;border:0}
+.report{border-top:1px solid #28403a;padding:15px 0}.report:first-child{border-top:0}.target{font-size:18px;font-weight:900;word-break:break-word}.meta{font-size:12px;color:#9bb0aa;line-height:1.5;margin:5px 0 8px}.story{white-space:pre-wrap;line-height:1.5}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.badge{display:inline-block;padding:4px 8px;border-radius:99px;font-size:10px;font-weight:900;background:#332c10;color:#f2dc83}.verified{background:#123b2b;color:#9ee2bd}.rejected{background:#401c1c;color:#ffaaaa}.alert{background:#3a2410;color:#ffd68a}.empty{text-align:center;padding:28px 8px}.toast{position:fixed;left:12px;right:12px;bottom:15px;background:#dff7ec;color:#081510;padding:13px;border-radius:13px;text-align:center;font-weight:900;z-index:99}.dangerText{color:#ffaaaa}.okText{color:#9ee2bd}
+@media(max-width:560px){.stats{grid-template-columns:1fr 1fr}.top{align-items:flex-start}.actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">BALI SCAMCHECK 🛡️</div>
+  <div class="sub">Admin Command Center • V13 STABLE LOGIN</div>
+  <div id="online" class="muted">● Online</div>
+
+  <section id="login" class="card">
+    <h2>Login Admin</h2><div class="muted">Gunakan akun admin Supabase.</div>
+    <input id="email" type="email" autocomplete="username" placeholder="Email admin">
+    <input id="password" type="password" autocomplete="current-password" placeholder="Password">
+    <button id="loginBtn" class="primary loginbtn" type="button" onclick="loginAdmin()">LOGIN</button>
+    <div id="loginMsg" class="msg muted"></div>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="top"><div><h2>Command Center</h2><div id="who" class="muted"></div></div><button type="button" onclick="logout()">Logout</button></div>
+
+    <div class="stats">
+      <div class="stat"><div class="num" id="pendingN">0</div><div class="label">PENDING</div></div>
+      <div class="stat"><div class="num" id="verifiedN">0</div><div class="label">VERIFIED</div></div>
+      <div class="stat"><div class="num" id="rejectedN">0</div><div class="label">REJECTED</div></div>
+      <div class="stat"><div class="num" id="alertN">0</div><div class="label">ACTIVE ALERT</div></div>
+    </div>
+
+    <div class="card">
+      <div class="filters"><input id="search" type="search" placeholder="Cari target, modus, area..."><button type="button" class="primary" onclick="loadReports()">↻</button></div>
+      <div class="chips">
+        <button type="button" class="chip active" onclick="setFilter('all',this)">Semua</button>
+        <button type="button" class="chip" onclick="setFilter('pending',this)">Pending</button>
+        <button type="button" class="chip" onclick="setFilter('verified',this)">Verified</button>
+        <button type="button" class="chip" onclick="setFilter('rejected',this)">Rejected</button>
+        <button type="button" class="chip" onclick="setFilter('alert',this)">🚨 Alert</button>
+      </div>
+    </div>
+
+    <div class="card"><h3>🚨 Active Alert</h3><div id="alerts" class="muted">Memuat...</div></div>
+    <div id="list" class="card"><div class="muted">Memuat...</div></div>
+  </section>
+</div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+"use strict";
+const URL="https://mqfipqpmsuapfctotjzo.supabase.co";
+const KEY="sb_publishable_4sFZXYku2HwgJ7wvHWkKLA_tN-nKxk-";
+let token="", reports=[], filter="all";
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(s){const e=$("toast");e.textContent=s;e.classList.remove("hidden");setTimeout(()=>e.classList.add("hidden"),2200)}
+function msg(s,good=false){$("loginMsg").textContent=s;$("loginMsg").className="msg "+(good?"okText":"dangerText")}
+
+async function request(path,options={}){
+  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);
+  try{
+    const r=await fetch(URL+path,{...options,cache:"no-store",headers:{apikey:KEY,"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{}),...(options.headers||{})},signal:controller.signal});
+    const text=await r.text();let data=null;try{data=text?JSON.parse(text):null}catch{}
+    if(!r.ok) throw new Error((data&&(data.error_description||data.message||data.msg||data.error))||text||("HTTP "+r.status));
+    return data;
+  }finally{clearTimeout(timer)}
+}
+
+async function loginAdmin(){
+  const b=$("loginBtn"),email=$("email").value.trim(),password=$("password").value;
+  if(!email||!password){msg("Email dan password wajib diisi.");return}
+  b.disabled=true;b.textContent="LOGIN...";
+  try{
+    const d=await request("/auth/v1/token?grant_type=password",{method:"POST",body:JSON.stringify({email,password})});
+    if(!d||!d.access_token) throw new Error("Token login tidak diterima.");
+    token=d.access_token;
+    sessionStorage.setItem("bsc_v13_token",token);
+    const u=await request("/auth/v1/user");
+    const role=u?.app_metadata?.role;
+    if(role!=="admin"){token="";sessionStorage.removeItem("bsc_v13_token");throw new Error("Akun ini bukan admin.");}
+    $("login").classList.add("hidden");$("app").classList.remove("hidden");$("who").textContent=u.email||email;
+    msg("",true);await loadReports();toast("Login berhasil");
+  }catch(e){
+    token="";sessionStorage.removeItem("bsc_v13_token");
+    msg(e.name==="AbortError"?"Koneksi timeout. Coba lagi.":e.message||"Login gagal.");
+  }finally{b.disabled=false;b.textContent="LOGIN"}
+}
+
+async function restore(){
+  const t=sessionStorage.getItem("bsc_v13_token");if(!t)return;
+  token=t;
+  try{
+    const u=await request("/auth/v1/user");
+    if(u?.app_metadata?.role!=="admin")throw new Error();
+    $("login").classList.add("hidden");$("app").classList.remove("hidden");$("who").textContent=u.email||"Admin";await loadReports();
+  }catch{logout(false)}
+}
+
+function logout(show=true){token="";sessionStorage.removeItem("bsc_v13_token");$("app").classList.add("hidden");$("login").classList.remove("hidden");if(show)toast("Logout berhasil")}
+
+async function loadReports(){
+  if(!token)return;
+  $("list").innerHTML='<div class="muted">Memuat laporan...</div>';
+  try{
+    reports=await request("/rest/v1/reports?select=*&order=created_at.desc")||[];
+    render();renderAlerts();stats();
+  }catch(e){$("list").innerHTML='<div class="dangerText">'+esc(e.message)+'</div>'}
+}
+
+function stats(){
+ $("pendingN").textContent=reports.filter(x=>x.status==="pending").length;
+ $("verifiedN").textContent=reports.filter(x=>x.status==="verified").length;
+ $("rejectedN").textContent=reports.filter(x=>x.status==="rejected").length;
+ $("alertN").textContent=reports.filter(x=>x.status==="verified"&&x.is_alert).length;
+}
+
+function setFilter(f,el){filter=f;document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));el.classList.add("active");render()}
+$("search").addEventListener("input",render);
+
+function render(){
+ const q=$("search").value.trim().toLowerCase();
+ const a=reports.filter(x=>{
+   const ok=filter==="all"||(filter==="alert"?(x.status==="verified"&&x.is_alert):x.status===filter);
+   const text=[x.target,x.category,x.area,x.story,x.alert_title,x.admin_note].join(" ").toLowerCase();
+   return ok&&(!q||text.includes(q));
+ });
+ $("list").innerHTML=a.length?a.map(reportHtml).join(""):'<div class="empty muted">Tidak ada laporan.</div>';
+}
+
+function reportHtml(x){
+ const st=esc(x.status||"");
+ const badge=x.status==="verified"?"verified":x.status==="rejected"?"rejected":"";
+ return `<div class="report">
+   <div class="target">${esc(x.target)}</div>
+   <div class="meta">${esc(x.target_type)} • ${esc(x.category)} • ${esc(x.area)} • ${esc(x.created_at)}<br><span class="badge ${badge}">${st.toUpperCase()}</span>${x.is_alert?'<span class="badge alert">🚨 ALERT</span>':''}</div>
+   <div class="story">${esc(x.story)}</div>
+   ${x.admin_note?'<div class="meta">📝 '+esc(x.admin_note)+'</div>':''}
+   ${x.status==="pending"?`<div class="actions"><button class="primary" type="button" onclick="changeStatus(${x.id},'verified')">✓ VERIFIKASI</button><button class="danger" type="button" onclick="changeStatus(${x.id},'rejected')">✕ TOLAK</button></div>`:""}
+ </div>`;
+}
+
+function renderAlerts(){
+ const a=reports.filter(x=>x.status==="verified"&&x.is_alert);
+ $("alerts").innerHTML=a.length?a.map(x=>`<div class="report"><b>🚨 ${esc(x.alert_title||x.target)}</b><div class="meta">${esc(x.target)} • ${esc(x.area)}</div><button type="button" onclick="toggleAlert(${x.id},false)">NONAKTIFKAN</button></div>`).join(""):"Tidak ada alert aktif.";
+}
+
+async function changeStatus(id,status){
+ try{
+  await request("/rest/v1/reports?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({status})});
+  toast(status==="verified"?"Laporan diverifikasi":"Laporan ditolak");await loadReports();
+ }catch(e){toast(e.message)}
+}
+async function toggleAlert(id,on){
+ try{
+  await request("/rest/v1/reports?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({is_alert:on})});
+  await loadReports();
+ }catch(e){toast(e.message)}
+}
+
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});
+}
+if("caches" in window){caches.keys().then(ks=>ks.filter(k=>k.startsWith("bsc-admin-")).forEach(k=>caches.delete(k))).catch(()=>{})}
+window.addEventListener("load",()=>restore());
+window.addEventListener("online",()=>{$("online").textContent="● Online"});
+window.addEventListener("offline",()=>{$("online").textContent="● Offline"});
+</script>
+</body></html>
