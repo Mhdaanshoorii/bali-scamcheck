@@ -4,10 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071311">
+<meta name="application-name" content="Bali ScamCheck Admin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ScamCheck Admin">
+<link rel="manifest" href="./admin-manifest.json">
 <title>Bali ScamCheck — Admin V7</title>
 <style>
 *{box-sizing:border-box}html{background:#071311}body{margin:0;background:#071311;color:#edf7f3;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 button,input,textarea{font:inherit}button{touch-action:manipulation;cursor:pointer}
+.install{display:none;width:auto;min-height:40px;padding:8px 11px;margin-left:auto}
+.pwa-row{display:flex;align-items:center;gap:8px;margin:4px 0 10px}
+.pwa-status{font-size:11px;color:#9bb0aa}
+.offline{background:#3a2410!important;color:#ffd68a!important}
 .wrap{max-width:900px;margin:auto;padding:14px 12px calc(28px + env(safe-area-inset-bottom))}
 .brand{font-size:23px;font-weight:900}.sub{font-size:13px;color:#9bb0aa;margin:3px 0 14px}
 .card{background:#10201d;border:1px solid #28403a;border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 8px 24px #0003}
@@ -38,7 +47,8 @@ button{min-height:46px;padding:11px 13px;border-radius:12px;border:1px solid #36
 </head>
 <body>
 <div class="wrap">
-<div class="brand">BALI SCAMCHECK 🛡️</div><div class="sub">Admin Command Center • V7 Analytics & Intelligence</div>
+<div class="pwa-row"><div><div class="brand">BALI SCAMCHECK 🛡️</div><div class="sub">Admin Command Center • V10 PWA</div></div><button id="installBtn" class="install primary" type="button">＋ PASANG APP</button></div>
+<div id="netStatus" class="pwa-status">● Online</div>
 
 <section id="login" class="card">
 <h2>Login Admin</h2><div class="muted hint">Gunakan akun admin Supabase.</div>
@@ -206,7 +216,30 @@ async function toggleAlert(id,on){const raw=(($("alert_"+id)||{}).value||"").tri
 async function updateAlertTitle(id){const raw=(($("edit_"+id)||{}).value||"").trim();const pr=(($("priority_"+id)||{}).value||"MEDIUM");const title=raw.includes(" | ")?raw:pr+" | "+raw;if(!raw){alert("Judul alert tidak boleh kosong.");return}try{await api("reports?id=eq."+id,{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({alert_title:title,is_alert:true})});await loadAll();toast("Judul diperbarui")}catch(e){alert("Gagal:\n"+e.message)}}
 function logout(){sessionStorage.removeItem("bsc_admin_token");location.reload()}
 async function restore(){const t=sessionStorage.getItem("bsc_admin_token");if(!t)return;accessToken=t;try{const r=await fetch(SUPABASE_URL+"/auth/v1/user",{headers:{apikey:SUPABASE_KEY,Authorization:"Bearer "+t}});if(!r.ok)throw 0;const u=await r.json();showApp(u.email||"Admin");await loadAll()}catch{sessionStorage.removeItem("bsc_admin_token")}}
-document.addEventListener("DOMContentLoaded",()=>{$("loginBtn").onclick=login;$("logoutBtn").onclick=logout;$("refreshBtn").onclick=loadAll;$("search").oninput=render;$("password").onkeydown=e=>{if(e.key==="Enter")login()};document.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>setFilter(b.dataset.filter));$("bulkVerify").onclick=()=>bulkStatus("verified");$("bulkReject").onclick=()=>bulkStatus("rejected");restore()});
+
+let deferredInstall=null;
+function updateNet(){
+ const n=$("netStatus"); if(!n)return;
+ n.textContent=navigator.onLine?"● Online":"● Offline";
+ n.classList.toggle("offline",!navigator.onLine);
+}
+window.addEventListener("online",updateNet);window.addEventListener("offline",updateNet);
+window.addEventListener("beforeinstallprompt",e=>{
+ e.preventDefault();deferredInstall=e;
+ const b=$("installBtn"); if(b)b.style.display="block";
+});
+async function installPWA(){
+ if(!deferredInstall){toast("Gunakan menu browser → Tambahkan ke layar utama");return}
+ deferredInstall.prompt();
+ try{await deferredInstall.userChoice}catch{}
+ deferredInstall=null;$("installBtn").style.display="none";
+}
+function setupPWA(){
+ updateNet();
+ const b=$("installBtn"); if(b)b.onclick=installPWA;
+ if("serviceWorker" in navigator) navigator.serviceWorker.register("./admin-sw.js").catch(()=>{});
+}
+document.addEventListener("DOMContentLoaded",()=>{setupPWA();$("loginBtn").onclick=login;$("logoutBtn").onclick=logout;$("refreshBtn").onclick=loadAll;$("search").oninput=render;$("password").onkeydown=e=>{if(e.key==="Enter")login()};document.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>setFilter(b.dataset.filter));$("bulkVerify").onclick=()=>bulkStatus("verified");$("bulkReject").onclick=()=>bulkStatus("rejected");restore()});
 </script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+{
+  "name":"Bali ScamCheck Admin",
+  "short_name":"ScamCheck Admin",
+  "start_url":"./admin.html",
+  "display":"standalone",
+  "background_color":"#071311",
+  "theme_color":"#071311",
+  "description":"Bali ScamCheck Admin Command Center",
+  "icons":[
+    {"src":"icon.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"icon.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
