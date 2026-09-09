@@ -16,6 +16,8 @@ button{cursor:pointer;font-weight:800}.primary{background:#dff7ec;color:#0a1714;
 .report{border-top:1px solid #28403a;padding:16px 0}.report:first-child{border-top:0}.target{font-size:18px;font-weight:800;word-break:break-word}.meta{font-size:12px;color:#9bb0aa;line-height:1.5;margin:5px 0 10px}.story{white-space:pre-wrap;line-height:1.45;color:#d9e7e3}.badge{display:inline-block;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800;background:#332c10;color:#f2dc83}.badge.v{background:#123b2b;color:#9ee2bd}.badge.r{background:#401c1c;color:#ffaaaa}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.note{margin-top:10px}.hidden{display:none!important}
 @media(max-width:430px){.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
+
+.alert-box{margin-top:10px;padding:11px;border-radius:12px;background:#1b2b20;border:1px solid #3d6049}.alert-title{font-weight:800}.alert-on{color:#9ee2bd;font-size:12px}.alert-actions{margin-top:8px}
 </style>
 </head>
 <body>
@@ -92,8 +94,10 @@ function render(){
    <div class="meta">${esc(r.target_type)} • ${esc(r.category)} • ${esc(r.area)}<br>${new Date(r.created_at).toLocaleString("id-ID")} <span class="badge ${r.status==="verified"?"v":r.status==="rejected"?"r":""}">${esc(r.status)}</span></div>
    <div class="story">${esc(r.story)}</div>
    ${r.admin_note?`<div class="note muted"><b>Catatan admin:</b> ${esc(r.admin_note)}</div>`:""}
+   ${r.is_alert?`<div class="alert-box"><div class="alert-on">🚨 ALERT AKTIF</div><div class="alert-title">${esc(r.alert_title||'Bali Scam Alert')}</div><div class="alert-actions"><button class="ghost" onclick="toggleAlert(${r.id},false)">NONAKTIFKAN ALERT</button></div></div>`:""}
    ${pending?`<div class="note"><textarea id="note_${r.id}" placeholder="Catatan admin / alasan keputusan (opsional)"></textarea>
    <div class="actions"><button class="primary" onclick="setStatus(${r.id},'verified')">✓ VERIFIKASI</button><button class="danger" onclick="setStatus(${r.id},'rejected')">✕ TOLAK</button></div></div>`:""}
+   ${r.status==="verified"&&!r.is_alert?`<div class="note"><input id="alert_${r.id}" placeholder="Judul alert, contoh: Waspada modus rental motor di Canggu"><button class="primary" onclick="toggleAlert(${r.id},true)">🚨 JADIKAN ALERT</button></div>`:""}
   </div>`}).join("");
 }
 async function setStatus(id,status){
@@ -104,6 +108,17 @@ async function setStatus(id,status){
   await api("reports?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({status,admin_note:note||null})});
   await loadAll();
  }catch(e){alert("Gagal mengubah status:\n"+e.message)}
+}
+
+async function toggleAlert(id,on){
+ const title=(document.getElementById("alert_"+id)?.value||"").trim();
+ if(on && !title){alert("Isi judul alert terlebih dahulu.");return}
+ if(on && !confirm("Tampilkan laporan ini sebagai Bali Scam Alert?"))return;
+ if(!on && !confirm("Nonaktifkan alert ini?"))return;
+ try{
+  await api("reports?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({is_alert:on,alert_title:on?title:null})});
+  await loadAll();
+ }catch(e){alert("Gagal mengubah alert:\n"+e.message)}
 }
 function logout(){accessToken="";sessionStorage.removeItem("bsc_admin_token");location.reload()}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
