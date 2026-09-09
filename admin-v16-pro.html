@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#081411">
+<title>Bali ScamCheck — Admin V16 PRO</title>
+<style>
+:root{--bg:#07110f;--panel:#0d1c18;--panel2:#10241f;--line:#1d3830;--text:#eef7f3;--muted:#91aaa2;--accent:#65e6b0;--danger:#ff6f7d;--warn:#ffd166;--blue:#73b7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#173a30 0,#07110f 38%,#050b0a 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:8px 0 18px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border:1px solid #2e5a4b;border-radius:14px;display:grid;place-items:center;background:#102820;font-size:24px;box-shadow:0 0 30px #65e6b018}
+h1{font-size:20px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:3px}.live{font-size:12px;color:var(--accent);border:1px solid #285744;background:#0c211a;padding:7px 10px;border-radius:99px}
+.card{background:linear-gradient(145deg,#10231eeb,#0a1714f2);border:1px solid var(--line);border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 12px 35px #0005;backdrop-filter:blur(12px)}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:20px}.hero h2{margin:0;font-size:24px}.hero p{margin:7px 0 0;color:var(--muted);font-size:13px}.hero .pulse{color:var(--accent);font-size:13px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{min-height:108px;position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-38px;top:-38px;background:#65e6b014}.kpi .label{color:var(--muted);font-size:12px}.kpi .num{font-size:30px;font-weight:850;margin-top:9px}.kpi .hint{font-size:11px;color:#6f8981;margin-top:5px}
+.alert{border-color:#69423a;background:linear-gradient(135deg,#291916,#111715)}.alert h3{margin:0;color:#ffd9c9}.alertTitle{font-size:20px;font-weight:800;margin:7px 0}.alertMeta{font-size:12px;color:#b9c8c3}
+.toolbar{display:grid;grid-template-columns:1fr 190px 110px;gap:9px}input,select,textarea{width:100%;background:#091613;color:var(--text);border:1px solid #28463d;border-radius:11px;padding:12px;font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:#4c8d76}button{border:0;border-radius:11px;padding:12px 13px;font:inherit;font-weight:800;cursor:pointer;background:var(--accent);color:#052018}button.secondary{background:#1b322b;color:#d9eee7;border:1px solid #2c5145}button.danger{background:#5b2028;color:#ffdfe2;border:1px solid #80333e}.reports{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.report{margin:0;padding:15px;background:#0b1916;border:1px solid #203b33;border-radius:15px}.reportTop{display:flex;justify-content:space-between;gap:8px;align-items:center}.badge{display:inline-block;padding:5px 8px;border-radius:99px;font-size:10px;font-weight:900;text-transform:uppercase}.pending{background:#3b3113;color:#ffd86a}.verified{background:#103b2c;color:#73e9b8}.rejected{background:#421b22;color:#ff8995}.target{font-size:18px;font-weight:850;margin:12px 0 4px;word-break:break-word}.meta{color:var(--muted);font-size:11px}.story{font-size:13px;line-height:1.55;color:#d2e0db;margin:11px 0}.reportActions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.full{grid-column:1/-1}.empty{text-align:center;color:var(--muted);padding:35px}
+.analytics{display:grid;grid-template-columns:1.2fr .8fr;gap:11px}.chart{height:150px;display:flex;align-items:end;gap:7px;padding-top:18px}.barWrap{flex:1;text-align:center;height:100%;display:flex;align-items:end;justify-content:center;gap:4px}.bar{width:100%;max-width:28px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#65e6b0,#2b7e62);min-height:3px}.day{font-size:9px;color:#718b82}.rank{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #19332b;font-size:12px}.rank:last-child{border:0}.rank b{color:#e9f6f1}.login{max-width:440px;margin:9vh auto}.login button{width:100%;margin-top:7px}.msg{padding:10px;border-radius:10px;margin-top:8px;font-size:12px;background:#32171b;color:#ffb5bd}.ok{background:#0e3327;color:#9bf2ca}.hidden{display:none!important}.logout{width:auto;padding:9px 12px}
+@media(max-width:760px){.wrap{padding:12px}.grid{grid-template-columns:repeat(2,1fr)}.reports,.analytics{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar button{grid-column:1/-1}.hero{align-items:flex-start;flex-direction:column}.live{align-self:flex-start}.top{padding-bottom:8px}}
+</style>
+</head>
+<body>
+<div id="loginBox" class="login card">
+<div class="brand"><div class="logo">🛡️</div><div><h1>BALI SCAMCHECK</h1><div class="sub">ADMIN COMMAND CENTER • V16 PRO</div></div></div>
+<h2 style="margin:22px 0 6px">Welcome back</h2><div class="sub">Secure moderation console</div>
+<input id="email" type="email" placeholder="Email admin" autocomplete="username">
+<input id="password" type="password" placeholder="Password" autocomplete="current-password">
+<button onclick="loginAdmin()">LOGIN TO COMMAND CENTER</button><div id="loginMsg"></div>
+</div>
+
+<div id="app" class="hidden">
+<div class="wrap">
+<header class="top"><div class="brand"><div class="logo">🛡️</div><div><h1>BALI SCAMCHECK</h1><div class="sub">ADMIN COMMAND CENTER • V16 PRO</div></div></div><div><span class="live">● SYSTEM ONLINE</span> <button class="secondary logout" onclick="logout()">LOGOUT</button></div></header>
+
+<section class="card hero"><div><h2>Intelligence Overview</h2><p>Moderate reports, track emerging scam signals, and control public alerts.</p></div><div class="pulse">LIVE DATA</div></section>
+
+<section class="grid">
+<div class="card kpi"><div class="label">PENDING REVIEW</div><div class="num" id="pending">0</div><div class="hint">Needs moderation</div></div>
+<div class="card kpi"><div class="label">VERIFIED</div><div class="num" id="verified">0</div><div class="hint">Public signals</div></div>
+<div class="card kpi"><div class="label">TODAY</div><div class="num" id="today">0</div><div class="hint">Reports received</div></div>
+<div class="card kpi"><div class="label">ACTIVE ALERT</div><div class="num" id="alerts">0</div><div class="hint">High-visibility warnings</div></div>
+</section>
+
+<div id="alertCenter"></div>
+
+<section class="analytics">
+<div class="card"><b>7-Day Activity</b><div id="chart" class="chart"></div></div>
+<div class="card"><b>Risk Intelligence</b><div id="insight"></div></div>
+</section>
+
+<section class="card">
+<div class="toolbar">
+<input id="search" placeholder="🔎 Search target, story, area, category..." oninput="render()">
+<select id="filter" onchange="render()"><option value="all">All reports</option><option value="pending">Pending</option><option value="verified">Verified</option><option value="rejected">Rejected</option><option value="alert">Active alerts</option></select>
+<button class="secondary" onclick="loadReports()">↻ REFRESH</button>
+</div>
+</section>
+
+<section class="reports" id="reports"></section>
+</div>
+</div>
+
+<script>
+const SUPABASE_URL="https://mqfipqpmsuapfctotjzo.supabase.co";
+const SUPABASE_KEY="sb_publishable_4sFZXYku2HwgJ7wvHWwKLA_tN-nKxk-";
+let token=localStorage.getItem("bsc_v15_token")||"";let reports=[];
+function headers(auth=true){const h={"apikey":SUPABASE_KEY,"Content-Type":"application/json"};if(auth)h.Authorization="Bearer "+token;return h}
+function setMsg(t,ok=false){const e=document.getElementById("loginMsg");e.className="msg "+(ok?"ok":"");e.textContent=t}
+async function req(path,opt={}){const c=new AbortController(),tm=setTimeout(()=>c.abort(),15000);try{const r=await fetch(SUPABASE_URL+path,{cache:"no-store",...opt,headers:{...headers(opt.auth!==false),...(opt.headers||{})},signal:c.signal});const tx=await r.text();let d;try{d=tx?JSON.parse(tx):null}catch{d=tx}if(!r.ok)throw Error(d?.msg||d?.message||tx||("HTTP "+r.status));return d}finally{clearTimeout(tm)}}
+async function loginAdmin(){const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value;if(!email||!password){setMsg("Isi email dan password.");return}setMsg("Connecting...",true);try{const d=await req("/auth/v1/token?grant_type=password",{method:"POST",auth:false,body:JSON.stringify({email,password})});if(!d.access_token)throw Error("Token login tidak diterima.");token=d.access_token;localStorage.setItem("bsc_v15_token",token);const u=await req("/auth/v1/user");if(u.app_metadata?.role!=="admin"){token="";localStorage.removeItem("bsc_v15_token");throw Error("Login berhasil, tetapi akun ini bukan admin.");}document.getElementById("loginBox").classList.add("hidden");document.getElementById("app").classList.remove("hidden");await loadReports()}catch(e){setMsg("GAGAL: "+(e.name==="AbortError"?"Request timeout.":e.message))}}
+async function loadReports(){try{reports=await req("/rest/v1/reports?select=*&order=created_at.desc");stats();renderAnalytics();render()}catch(e){alert("Gagal memuat laporan: "+e.message)}}
+function stats(){const now=new Date();document.getElementById("pending").textContent=reports.filter(x=>x.status==="pending").length;document.getElementById("verified").textContent=reports.filter(x=>x.status==="verified").length;document.getElementById("alerts").textContent=reports.filter(x=>x.is_alert===true).length;document.getElementById("today").textContent=reports.filter(x=>{const d=new Date(x.created_at);return d.toDateString()===now.toDateString()}).length}
+function renderAnalytics(){const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push(d)}const vals=days.map(d=>reports.filter(r=>{const x=new Date(r.created_at);return x.toDateString()===d.toDateString()}).length);const max=Math.max(1,...vals);document.getElementById("chart").innerHTML=days.map((d,i)=>`<div class="barWrap"><div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center"><span style="font-size:9px;color:#829c93;margin-bottom:4px">${vals[i]}</span><div class="bar" style="height:${Math.max(3,vals[i]/max*100)}%"></div><div class="day">${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]}</div></div></div>`).join("");
+const cats={};const areas={};reports.forEach(r=>{if(r.status==="verified"){cats[r.category]=(cats[r.category]||0)+1;areas[r.area]=(areas[r.area]||0)+1}});const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,4);let h="";top(cats).forEach(x=>h+=`<div class="rank"><span>${esc(x[0])}</span><b>${x[1]}</b></div>`);if(!h)h='<div class="sub" style="padding:12px 0">Belum ada data verified.</div>';document.getElementById("insight").innerHTML='<div class="sub" style="margin:10px 0 3px">TOP CATEGORIES</div>'+h+top(areas).map(x=>`<div class="rank"><span>📍 ${esc(x[0])}</span><b>${x[1]}</b></div>`).join("");
+renderAlertCenter()}
+function renderAlertCenter(){const a=reports.filter(r=>r.is_alert===true);document.getElementById("alertCenter").innerHTML=a.length?`<section class="card alert"><h3>🚨 ACTIVE ALERT CENTER</h3>${a.map(r=>`<div class="alertTitle">${esc(r.alert_title||"Scam Alert")}</div><div class="alertMeta">${esc(r.target)} • ${esc(r.area)} • ${esc(r.category)}</div><button class="danger" style="margin-top:11px;width:auto" onclick="deactivateAlert(${r.id})">NONAKTIFKAN</button>`).join("")}</section>`:""}
+function render(){const q=document.getElementById("search").value.toLowerCase(),f=document.getElementById("filter").value;const arr=reports.filter(r=>{const t=[r.target,r.story,r.area,r.category,r.alert_title,r.admin_note].join(" ").toLowerCase();return(!q||t.includes(q))&&(f==="all"||(f==="alert"?r.is_alert===true:r.status===f))});document.getElementById("reports").innerHTML=arr.map(r=>`<article class="report"><div class="reportTop"><span class="badge ${esc(r.status)}">${esc(r.status)}</span>${r.is_alert?"<span>🚨 ALERT</span>":""}</div><div class="target">${esc(r.target)}</div><div class="meta">${esc(r.target_type)} • ${esc(r.category)} • 📍 ${esc(r.area)}</div><div class="story">${esc(r.story)}</div>${r.alert_title?`<div class="meta">🚨 ${esc(r.alert_title)}</div>`:""}${r.admin_note?`<div class="meta" style="margin-top:7px">📝 ${esc(r.admin_note)}</div>`:""}<div class="reportActions">${r.status==="pending"?`<button onclick="setStatus(${r.id},'verified')">✓ VERIFY</button><button class="danger" onclick="setStatus(${r.id},'rejected')">✕ REJECT</button>`:""}${r.status==="verified"&&!r.is_alert?`<button class="secondary full" onclick="makeAlert(${r.id})">🚨 JADIKAN ALERT</button>`:""}${r.is_alert?`<button class="danger full" onclick="deactivateAlert(${r.id})">NONAKTIFKAN ALERT</button>`:""}</div></article>`).join("")||'<div class="card empty full">Tidak ada laporan yang cocok.</div>'}
+async function setStatus(id,status){try{await req("/rest/v1/reports?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({status})});await loadReports()}catch(e){alert(e.message)}}
+async function makeAlert(id){const title=prompt("Judul alert:");if(!title?.trim())return;try{await req("/rest/v1/reports?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({is_alert:true,alert_title:title.trim(),status:"verified"})});await loadReports()}catch(e){alert(e.message)}}
+async function deactivateAlert(id){if(!confirm("Nonaktifkan alert ini?"))return;try{await req("/rest/v1/reports?id=eq."+id,{method:"PATCH",headers:{"Prefer":"return=minimal"},body:JSON.stringify({is_alert:false})});await loadReports()}catch(e){alert(e.message)}}
+function logout(){token="";localStorage.removeItem("bsc_v15_token");location.reload()}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function restore(){if(!token)return;try{const u=await req("/auth/v1/user");if(u.app_metadata?.role==="admin"){document.getElementById("loginBox").classList.add("hidden");document.getElementById("app").classList.remove("hidden");await loadReports()}else logout()}catch{localStorage.removeItem("bsc_v15_token");token=""}}
+restore();
+</script>
+</body>
+</html>
